@@ -7,21 +7,33 @@ interface Props {
   reactions: number;
 }
 
+const truncateString = (str: string): string => {
+  const words = str.split(' ');
+  const truncatedWords = words.slice(0, 10);
+  const truncatedString = truncatedWords.join(' ');
+
+  if (words.length > 10) {
+    return `${truncatedString}...`;
+  }
+
+  return truncatedString;
+};
+
 const PostCard: React.FC<Props> = ({ title, tags, body, reactions }) => {
   return (
     <div className="card">
-      <header className="card-header">
-        <p className="card-header-title">{title}</p>
+      <header className="card-header pb-3">
         <div className="columns">
-          {tags.map((tag) => (
-            <div className="column">
-              <span className="tag is-primary is-light">{tag}</span>
-            </div>
-          ))}
+          <div className="column is-full">
+            <p className="card-header-title">{title}</p>
+            {tags.map((tag) => (
+              <span className="tag is-primary is-light ml-3">{tag}</span>
+            ))}
+          </div>
         </div>
       </header>
       <div className="card-content">
-        <div className="content">{body}</div>
+        <div className="content">{truncateString(body)}</div>
         <p>Reactions {reactions}</p>
       </div>
     </div>

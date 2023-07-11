@@ -2,6 +2,7 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { PostsResponse, Post } from 'src/types/types';
 import PostCard from 'src/components/PostCard/PostCard';
+import Pagination from 'src/components/Pagination/Pagination';
 
 const SearchPosts: React.FC = () => {
   return (
@@ -24,12 +25,15 @@ export const Posts: React.FC = () => {
   const { isLoading, error, data } = useQuery({
     queryKey: ['postsData'],
     queryFn: () =>
-      fetch('https://dummyjson.com/posts').then((res) => res.json()),
+      fetch('https://dummyjson.com/posts?limit=6').then((res) => res.json()),
   });
 
   if (isLoading) return <>'Loading...'</>;
 
   // if (error) return 'An error has occurred: ' + error.message;
+
+  const { posts, total } = data;
+  const totalPages = total / 6;
 
   return (
     <>
@@ -43,16 +47,17 @@ export const Posts: React.FC = () => {
           <div className="column is-two-thirds">
             <SearchPosts />
             <div className="box">
-              <div className="columns is-multiline is-mobile">
-                {data.posts.map((post: Post) => {
+              <div className="columns is-multiline">
+                {posts.map((post: Post) => {
                   const { title, body, tags, reactions } = post;
                   return (
-                    <div className="column is-half is-mobile">
+                    <div className="column is-half">
                       <PostCard {...{ title, body, tags, reactions }} />
                     </div>
                   );
                 })}
               </div>
+              <Pagination totalPages={totalPages} />
             </div>
           </div>
         </div>
