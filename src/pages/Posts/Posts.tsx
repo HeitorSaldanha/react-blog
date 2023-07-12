@@ -81,7 +81,9 @@ export const Posts: React.FC = () => {
                   <PostsList posts={postsResult.posts} />
                 )}
               </div>
-              {!isLoading && !error && <Pagination {...{ totalPages: 20 }} />}
+              {!isLoading && !error && postsResult?.posts && (
+                <Pagination totalPages={postsResult?.total / 6} />
+              )}
             </div>
           </div>
         </div>
