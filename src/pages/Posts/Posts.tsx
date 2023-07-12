@@ -30,14 +30,11 @@ const ErrorMessage: React.FC<{ message: string }> = ({ message }) => (
 
 const PostsList: React.FC<{ posts: Post[] }> = ({ posts }) => (
   <>
-    {posts.map((post: Post) => {
-      const { title, body, tags, reactions } = post;
-      return (
-        <div className="column is-half">
-          <PostCard {...{ title, body, tags, reactions }} />
-        </div>
-      );
-    })}
+    {posts.map((post: Post) => (
+      <div className="column is-half">
+        <PostCard {...post} />
+      </div>
+    ))}
   </>
 );
 
@@ -57,11 +54,6 @@ export const Posts: React.FC = () => {
 
   return (
     <>
-      <section className="hero is-primary">
-        <div className="hero-body">
-          <p className="title">Posts</p>
-        </div>
-      </section>
       <section className="section">
         <div className="columns is-centered">
           <div className="column is-two-thirds">
