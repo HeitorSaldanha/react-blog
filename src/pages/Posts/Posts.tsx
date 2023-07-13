@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Post, PostsResponse } from 'src/types/types';
-import PostCard from 'src/components/PostCard/PostCard';
-import Pagination from 'src/components/Pagination/Pagination';
+import PostCard from 'src/components/PostCard';
+import Pagination from 'src/components/Pagination';
 
 const SearchPosts: React.FC = () => (
   <div className="columns is-centered">
