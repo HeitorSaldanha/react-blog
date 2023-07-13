@@ -1,4 +1,4 @@
-import { CommentResponse, Post, User } from 'src/types/types';
+import { CommentResponse, Post, User } from 'src/types';
 
 export const fetchPost = ({ postId }: { postId: string }): Promise<Post> =>
   fetch(`https://dummyjson.com/posts/${postId}`)

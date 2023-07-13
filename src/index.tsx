@@ -33,7 +33,13 @@ root.render(
           <p className="title">React Blog</p>
         </div>
       </section>
-      <RouterProvider router={router} />
+      <section className="section">
+        <div className="columns is-centered">
+          <div className="column is-two-thirds">
+            <RouterProvider router={router} />
+          </div>
+        </div>
+      </section>
     </QueryClientProvider>
   </React.StrictMode>
 );

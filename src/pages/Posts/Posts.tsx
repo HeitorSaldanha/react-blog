@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Post, PostsResponse } from 'src/types/types';
-import PostCard from 'src/components/PostCard';
-import Pagination from 'src/components/Pagination';
+import { Post, PostsResponse } from 'src/types';
+import { Breadcrumb, Pagination, PostCard } from 'src/components';
 
 const SearchPosts: React.FC = () => (
   <div className="columns is-centered">
@@ -30,8 +29,8 @@ const ErrorMessage: React.FC<{ message: string }> = ({ message }) => (
 
 const PostsList: React.FC<{ posts: Post[] }> = ({ posts }) => (
   <>
-    {posts.map((post: Post) => (
-      <div className="column is-half">
+    {posts.map((post, i) => (
+      <div key={`post-card-${i}`} className="column is-half">
         <PostCard {...post} />
       </div>
     ))}
@@ -54,32 +53,22 @@ export const Posts: React.FC = () => {
 
   return (
     <>
-      <section className="section">
-        <div className="columns is-centered">
-          <div className="column is-two-thirds">
-            <SearchPosts />
-            <div className="box">
-              <div className="columns is-multiline">
-                {isLoading && (
-                  <progress
-                    className="progress is-small is-primary mt-5"
-                    max="100"
-                  />
-                )}
-                {error instanceof Error && (
-                  <ErrorMessage message={error.message} />
-                )}
-                {!isLoading && !error && postsResult?.posts && (
-                  <PostsList posts={postsResult.posts} />
-                )}
-              </div>
-              {!isLoading && !error && postsResult?.posts && (
-                <Pagination totalPages={postsResult?.total / 6} />
-              )}
-            </div>
-          </div>
+      <Breadcrumb />
+      <SearchPosts />
+      <div className="box">
+        <div className="columns is-multiline">
+          {isLoading && (
+            <progress className="progress is-small is-primary mt-5" max="100" />
+          )}
+          {error instanceof Error && <ErrorMessage message={error.message} />}
+          {!isLoading && !error && postsResult?.posts && (
+            <PostsList posts={postsResult.posts} />
+          )}
         </div>
-      </section>
+        {!isLoading && !error && postsResult?.posts && (
+          <Pagination totalPages={postsResult?.total / 6} />
+        )}
+      </div>
     </>
   );
 };

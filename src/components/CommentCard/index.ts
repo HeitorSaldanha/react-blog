@@ -1,2 +1,1 @@
-import CommentCard from './CommentCard';
-export default CommentCard;
+export * from './CommentCard';

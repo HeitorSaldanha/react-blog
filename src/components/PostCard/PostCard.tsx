@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Post } from 'src/types/types';
+import { Post } from 'src/types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCommentDots } from '@fortawesome/free-regular-svg-icons';
 
@@ -16,7 +16,7 @@ const truncateString = (str: string): string => {
   return truncatedString;
 };
 
-const PostCard: React.FC<Post> = ({
+export const PostCard: React.FC<Post> = ({
   title,
   tags,
   body,
@@ -32,8 +32,10 @@ const PostCard: React.FC<Post> = ({
             <div className="column is-full">
               <p className="card-header-title">{title}</p>
 
-              {tags.map((tag) => (
-                <span className="tag is-primary is-light ml-3">{tag}</span>
+              {tags.map((tag, i) => (
+                <span className="tag is-primary is-light ml-3" key={`tag-${i}`}>
+                  {tag}
+                </span>
               ))}
             </div>
           </div>
@@ -51,5 +53,3 @@ const PostCard: React.FC<Post> = ({
     </Link>
   );
 };
-
-export default PostCard;

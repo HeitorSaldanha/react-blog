@@ -1,8 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
 import React from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { fetchUser } from 'src/utils/fetchData';
 
-const CommentCard: React.FC<{
+export const CommentCard: React.FC<{
   userName: string;
   body: string;
   userId: number;
@@ -33,5 +33,3 @@ const CommentCard: React.FC<{
     </div>
   );
 };
-
-export default CommentCard;

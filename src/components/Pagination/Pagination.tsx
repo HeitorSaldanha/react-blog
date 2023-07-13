@@ -35,11 +35,12 @@ const PageButtons: React.FC<{
   if (totalPages <= 5) {
     return (
       <>
-        {pagesArray.map((pageNumber) => (
+        {pagesArray.map((pageNumber, i) => (
           <PageButton
             pageNumber={pageNumber}
             isActive={currentPage === pageNumber}
             onClick={() => setCurrentPage(pageNumber)}
+            key={`page-button-${i}`}
           />
         ))}
       </>
@@ -130,7 +131,7 @@ const PageButtons: React.FC<{
   );
 };
 
-const Pagination: React.FC<Props> = ({ totalPages }) => {
+export const Pagination: React.FC<Props> = ({ totalPages }) => {
   const [currentPage, setCurrentPage] = useState(1);
   return (
     <nav
@@ -160,5 +161,3 @@ const Pagination: React.FC<Props> = ({ totalPages }) => {
     </nav>
   );
 };
-
-export default Pagination;
