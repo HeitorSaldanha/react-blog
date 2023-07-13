@@ -1,28 +1,48 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Post, PostsResponse } from 'src/types';
-import { Breadcrumb, Pagination, PostCard } from 'src/components';
+import { Post } from 'src/types';
+import { Breadcrumb, Pagination, PostCard, Loader } from 'src/components';
+import { fetchPosts } from 'src/utils/fetchData';
 
-const SearchPosts: React.FC = () => (
-  <div className="columns is-centered">
-    <div className="column is-half">
-      <div className="field has-addons">
-        <div className="control is-expanded">
-          <input className="input" type="text" placeholder="Find post" />
-        </div>
-        <div className="control">
-          <button className="button is-info">Search</button>
+const SearchPosts: React.FC<{
+  value: string;
+  onSubmit: () => void;
+  onChange: (a: string) => void;
+}> = ({ value, onSubmit, onChange }) => {
+  const handleSearch = async (ev: React.FormEvent) => {
+    ev.preventDefault();
+    onSubmit();
+  };
+
+  return (
+    <form onSubmit={(ev) => handleSearch(ev)}>
+      <div className="columns is-centered mb-2">
+        <div className="column is-half">
+          <div className="field has-addons">
+            <div className="control is-expanded">
+              <input
+                className="input"
+                type="text"
+                placeholder="Find post"
+                value={value}
+                onChange={(ev) => onChange(ev.target.value)}
+              />
+            </div>
+            <div className="control">
+              <button className="button is-info">Search</button>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-);
+    </form>
+  );
+};
 
-const ErrorMessage: React.FC<{ message: string }> = ({ message }) => (
+const ErrorMessage: React.FC<{ error: Error }> = ({ error }) => (
   <div className="column is-full">
     <div className="notification is-danger is-light has-text-centered">
       <h1 className="title is-3">Failed to load posts</h1>
-      <h2 className="subtitle is-5">{message}</h2>
+      <h2 className="subtitle is-5">{error.message}</h2>
     </div>
   </div>
 );
@@ -38,35 +58,33 @@ const PostsList: React.FC<{ posts: Post[] }> = ({ posts }) => (
 );
 
 export const Posts: React.FC = () => {
-  const [postsResult, setPostsResult] = useState<PostsResponse>();
+  const [page, setPage] = useState(1);
+  const [filter, setFilter] = useState('');
 
-  const { isLoading, error } = useQuery({
-    queryKey: ['postsData'],
-    queryFn: () =>
-      fetch('https://dummyjson.com/posts?limit=6')
-        .then((res) => res.json())
-        .then((data) => {
-          setPostsResult({ ...data });
-          return data;
-        }),
+  const { isLoading, isError, error, data, refetch } = useQuery({
+    queryKey: ['postsData', page],
+    queryFn: () => fetchPosts({ page, filter }),
+    keepPreviousData: true,
   });
+
+  const { posts, total = 0 } = data || {};
 
   return (
     <>
       <Breadcrumb />
-      <SearchPosts />
+      <SearchPosts value={filter} onChange={setFilter} onSubmit={refetch} />
       <div className="box">
         <div className="columns is-multiline">
-          {isLoading && (
-            <progress className="progress is-small is-primary mt-5" max="100" />
-          )}
-          {error instanceof Error && <ErrorMessage message={error.message} />}
-          {!isLoading && !error && postsResult?.posts && (
-            <PostsList posts={postsResult.posts} />
-          )}
+          {isLoading && <Loader />}
+          {isError && <ErrorMessage error={error as Error} />}
+          {!isLoading && !isError && posts && <PostsList posts={posts} />}
         </div>
-        {!isLoading && !error && postsResult?.posts && (
-          <Pagination totalPages={postsResult?.total / 6} />
+        {!isLoading && !isError && posts && total > 6 && (
+          <Pagination
+            totalPages={Math.ceil(total / 6)}
+            currentPage={page}
+            onChange={setPage}
+          />
         )}
       </div>
     </>
