@@ -22,7 +22,6 @@ export const PostCard: React.FC<Post> = ({
   body,
   reactions,
   id,
-  userId,
 }) => {
   return (
     <Link to={`post/${id}`}>
@@ -42,12 +41,19 @@ export const PostCard: React.FC<Post> = ({
         </header>
         <div className="card-content">
           <div className="content">{truncateString(body)}</div>
-          <span className="icon-text">
-            <span className="icon">
-              <FontAwesomeIcon icon={faCommentDots} />
-            </span>
-            <span>{reactions}</span>
-          </span>
+          <div className="columns is-mobile is-vcentered">
+            <div className="column is-half">
+              <span className="icon-text">
+                <span className="icon">
+                  <FontAwesomeIcon icon={faCommentDots} />
+                </span>
+                <span>{reactions}</span>
+              </span>
+            </div>
+            <div className="column has-text-right is-half">
+              <button className="button is-primary">Read more</button>
+            </div>
+          </div>
         </div>
       </div>
     </Link>

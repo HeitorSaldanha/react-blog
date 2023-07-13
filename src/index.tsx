@@ -3,10 +3,8 @@ import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import 'bulma/css/bulma.min.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Posts } from './pages/Posts';
-
+import { Posts, PostDetail, Error } from './pages';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { PostDetail } from './pages/PostDetail';
 
 const router = createBrowserRouter([
   {
@@ -16,6 +14,10 @@ const router = createBrowserRouter([
   {
     path: 'post/:id',
     element: <PostDetail />,
+  },
+  {
+    path: '*',
+    element: <Error errorCode={404} />,
   },
 ]);
 
