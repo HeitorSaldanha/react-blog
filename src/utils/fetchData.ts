@@ -6,7 +6,7 @@ export const fetchPosts = ({
   filter,
 }: {
   page: number;
-  filter: string;
+  filter?: string;
 }) =>
   axios
     .get<PostsResponse>(
