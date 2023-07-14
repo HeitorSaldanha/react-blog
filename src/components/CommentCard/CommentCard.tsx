@@ -1,16 +1,14 @@
 import React from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { fetchUser } from 'src/utils/fetchData';
+import { useUserQuery } from 'src/hooks/useQueries';
 
-export const CommentCard: React.FC<{
+export interface Props {
   userName: string;
   body: string;
   userId: number;
-}> = ({ userName, body, userId }) => {
-  const { data } = useQuery({
-    queryKey: ['user', userId],
-    queryFn: () => fetchUser({ userId }),
-  });
+}
+
+export const CommentCard: React.FC<Props> = ({ userName, body, userId }) => {
+  const { data } = useUserQuery(userId);
 
   const { image } = data || {};
 
@@ -20,7 +18,7 @@ export const CommentCard: React.FC<{
         <div className="media">
           <div className="media-left">
             <figure className="image is-48x48">
-              {image && <img src={image} alt="Placeholder" />}
+              {image && <img src={image} alt="User Profile" />}
             </figure>
           </div>
           <div className="media-content">

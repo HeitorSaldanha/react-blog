@@ -9,6 +9,7 @@ export const Loader: React.FC = () => (
       icon={faCog}
       spin
       style={{ animationDuration: '1s' }}
+      data-testid="loader-icon"
     />
   </div>
 );

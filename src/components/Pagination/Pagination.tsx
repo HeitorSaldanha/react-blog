@@ -160,7 +160,7 @@ export const Pagination: React.FC<Props> = ({
         }}
         disabled={currentPage === totalPages}
       >
-        Next page
+        Next
       </button>
       <ul className="pagination-list">
         <PageButtons {...{ totalPages, currentPage, onChange }} />
