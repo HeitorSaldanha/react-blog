@@ -1,38 +1,33 @@
 import React from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
-import { fetchComments, fetchPost, fetchUser } from 'src/utils/fetchData';
 import { Breadcrumb, CommentCard, Loader } from 'src/components';
 import { faFileLines } from '@fortawesome/free-solid-svg-icons';
+import {
+  useUserQuery,
+  usePostQuery,
+  useCommentsQuery,
+} from 'src/hooks/useQueries';
 
 export const PostDetail: React.FC = () => {
   const { id: postId = '' } = useParams();
+
   const queryClient = useQueryClient();
   queryClient.invalidateQueries({ queryKey: ['postDetail'] });
-  const postQuery = useQuery({
-    queryKey: ['postDetail'],
-    queryFn: () => fetchPost({ postId }),
-    cacheTime: 0,
-  });
+
+  const postQuery = usePostQuery(postId);
+  const commentsQuery = useCommentsQuery(postId);
+
+  console.log({ postQuery });
 
   const { userId = 0 } = postQuery.data || {};
 
-  const userQuery = useQuery({
-    queryKey: ['user', userId],
-    queryFn: () => fetchUser({ userId }),
-    enabled: !!userId,
-    cacheTime: 0,
-  });
-
-  const commentsQuery = useQuery({
-    queryKey: ['comments'],
-    queryFn: () => fetchComments({ postId }),
-    cacheTime: 0,
-  });
-
-  if (userQuery.error instanceof Error) return <>{}</>;
+  const userQuery = useUserQuery(userId);
 
   const { firstName, lastName } = userQuery.data || {};
+
+  const { isError } = userQuery;
+  console.log({ isError });
 
   return (
     <>
@@ -65,14 +60,18 @@ export const PostDetail: React.FC = () => {
                   </button>
                 </div>
               </div>
-              {commentsQuery.data?.comments.map((comment, i) => (
-                <CommentCard
-                  userId={comment.user.id}
-                  userName={comment.user.username}
-                  body={comment.body}
-                  key={`comment-card-${i}`}
-                />
-              ))}
+              {commentsQuery?.data?.comments && (
+                <>
+                  {commentsQuery.data.comments.map((comment, i) => (
+                    <CommentCard
+                      userId={comment.user.id}
+                      userName={comment.user.username}
+                      body={comment.body}
+                      key={`comment-card-${i}`}
+                    />
+                  ))}
+                </>
+              )}
             </section>
           </>
         )}
