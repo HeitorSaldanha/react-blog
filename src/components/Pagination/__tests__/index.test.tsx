@@ -17,7 +17,7 @@ describe('Pagination', () => {
     expect(pageButtons).toHaveLength(5);
   });
 
-  it('renders the correct number of pages', () => {
+  it('renders the correct number of page buttons when total pages are less than 5', () => {
     render(
       <Pagination
         totalPages={3}
@@ -44,7 +44,7 @@ describe('Pagination', () => {
     expect(onChange).toHaveBeenCalledWith(10);
   });
 
-  it('calls onChange when next and previous buttons are clicked', () => {
+  it('calls onChange when next or previous buttons are clicked', () => {
     render(
       <Pagination
         totalPages={totalPages}

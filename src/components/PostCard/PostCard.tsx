@@ -4,6 +4,8 @@ import { Post } from 'src/types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCommentDots } from '@fortawesome/free-regular-svg-icons';
 
+export interface Props extends Omit<Post, 'userId'> {}
+
 const truncateString = (str: string): string => {
   const words = str.split(' ');
   const truncatedWords = words.slice(0, 10);
@@ -16,7 +18,7 @@ const truncateString = (str: string): string => {
   return truncatedString;
 };
 
-export const PostCard: React.FC<Post> = ({
+export const PostCard: React.FC<Props> = ({
   title,
   tags,
   body,
