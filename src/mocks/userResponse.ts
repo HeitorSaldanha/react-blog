@@ -1,4 +1,4 @@
-export const userResponse = () => ({
+export const userResponse = {
   id: 1,
   firstName: 'Terry',
   lastName: 'Medhurst',
@@ -58,4 +58,4 @@ export const userResponse = () => ({
   ein: '20-9487066',
   ssn: '661-64-2976',
   userAgent: 'Mozilla/5.0 ...',
-});
+};

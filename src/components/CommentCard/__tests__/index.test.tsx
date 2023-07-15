@@ -3,10 +3,7 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import { CommentCard } from '../CommentCard';
 import { Props } from '../CommentCard';
 import { useUserQuery } from 'src/hooks/useQueries';
-
-const mockedResponse = {
-  image: 'https://example.com/image.jpg',
-};
+import { userResponse } from 'src/mocks';
 
 const mockedProps = {
   userName: 'Jon Doe',
@@ -40,7 +37,7 @@ describe('CommentCard', () => {
   it('renders the comment card with user details', () => {
     (useUserQuery as jest.Mock).mockImplementation(() => ({
       status: 'success',
-      data: { ...mockedResponse },
+      data: { ...userResponse },
     }));
     render(<Component {...mockedProps} />);
     const userName = screen.getByText(`@${mockedProps.userName}`);
@@ -48,7 +45,7 @@ describe('CommentCard', () => {
     const userProfilePic = screen.getByAltText('User Profile');
     expect(userName).toBeInTheDocument();
     expect(commentBody).toBeInTheDocument();
-    expect(userProfilePic.getAttribute('src')).toEqual(mockedResponse.image);
+    expect(userProfilePic.getAttribute('src')).toEqual(userResponse.image);
     expect(useUserQuery).toHaveBeenCalledWith(mockedProps.userId);
   });
 

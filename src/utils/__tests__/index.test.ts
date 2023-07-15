@@ -11,7 +11,7 @@ jest.mock('axios');
 
 describe('fetchData', () => {
   afterEach(() => {
-    jest.restoreAllMocks();
+    jest.clearAllMocks();
   });
 
   describe('fetchPosts', () => {
