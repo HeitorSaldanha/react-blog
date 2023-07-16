@@ -4,7 +4,7 @@ import { Post } from 'src/types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCommentDots } from '@fortawesome/free-regular-svg-icons';
 
-export interface Props extends Omit<Post, 'userId'> {}
+interface Props extends Omit<Post, 'userId'> {}
 
 const truncateString = (str: string): string => {
   const words = str.split(' ');

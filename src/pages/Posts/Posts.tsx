@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
 import { Post } from 'src/types';
 import { Breadcrumb, Pagination, PostCard, Loader } from 'src/components';
-import { fetchPosts } from 'src/utils/fetchData';
+import { usePostsQuery } from 'src/hooks/useQueries';
 
 const SearchPosts: React.FC<{
   value: string;
@@ -11,11 +10,12 @@ const SearchPosts: React.FC<{
 }> = ({ value, onSubmit, onChange }) => {
   const handleSearch = async (ev: React.FormEvent) => {
     ev.preventDefault();
+    console.log('ayy lmao');
     onSubmit();
   };
 
   return (
-    <form onSubmit={(ev) => handleSearch(ev)}>
+    <form onSubmit={(ev) => handleSearch(ev)} data-testid="search-post">
       <div className="columns is-centered mb-2">
         <div className="column is-half">
           <div className="field has-addons">
@@ -29,7 +29,9 @@ const SearchPosts: React.FC<{
               />
             </div>
             <div className="control">
-              <button className="button is-info">Search</button>
+              <button className="button is-info" type="submit">
+                Search
+              </button>
             </div>
           </div>
         </div>
@@ -50,7 +52,11 @@ const ErrorMessage: React.FC<{ error: Error }> = ({ error }) => (
 const PostsList: React.FC<{ posts: Post[] }> = ({ posts }) => (
   <>
     {posts.map((post, i) => (
-      <div key={`post-card-${i}`} className="column is-half">
+      <div
+        key={`post-card-${i}`}
+        className="column is-half"
+        data-testid="post-card"
+      >
         <PostCard {...post} />
       </div>
     ))}
@@ -61,10 +67,9 @@ export const Posts: React.FC = () => {
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState('');
 
-  const { isLoading, isError, error, data, refetch } = useQuery({
-    queryKey: ['postsData', page],
-    queryFn: () => fetchPosts({ page, filter }),
-    keepPreviousData: true,
+  const { isLoading, isError, error, data, refetch } = usePostsQuery({
+    page,
+    filter,
   });
 
   const { posts, total = 0 } = data || {};

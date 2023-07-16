@@ -1,5 +1,10 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useUserQuery, usePostQuery, useCommentsQuery } from '../useQueries';
+import {
+  useUserQuery,
+  usePostsQuery,
+  usePostQuery,
+  useCommentsQuery,
+} from '../useQueries';
 import { waitFor, renderHook } from '@testing-library/react';
 import { commentsResponse, postResponse, userResponse } from 'src/mocks';
 import axios from 'axios';
@@ -33,6 +38,24 @@ describe('useQueries', () => {
       expect(axios.get).toHaveBeenCalledWith(expectedUrl);
       expect(result.current.data).toEqual(userResponse);
     });
+  });
+
+  it('should call fetchPosts with the correct postId', async () => {
+    const expectedUrl = 'https://dummyjson.com/posts?limit=6&skip=0';
+    (axios.get as jest.Mock).mockImplementation(() =>
+      Promise.resolve({ data: postResponse })
+    );
+    const { result } = renderHook(
+      () => usePostsQuery({ page: 1, filter: '' }),
+      {
+        wrapper,
+      }
+    );
+    await waitFor(async () =>
+      expect(await result.current.isSuccess).toBe(true)
+    );
+    expect(axios.get).toHaveBeenCalledWith(expectedUrl);
+    expect(result.current.data).toEqual(postResponse);
   });
 
   it('should call fetchPost with the correct postId', async () => {

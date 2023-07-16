@@ -1,5 +1,5 @@
-import { PostCard, Props } from '../PostCard';
-import { BrowserRouter } from 'react-router-dom';
+import { PostCard } from '../PostCard';
+import { MemoryRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 
 const mockedProps = {
@@ -10,15 +10,9 @@ const mockedProps = {
   id: 1,
 };
 
-const Component: React.FC<Props> = (props) => (
-  <BrowserRouter>
-    <PostCard {...props} />
-  </BrowserRouter>
-);
-
 describe('PostCard', () => {
   it('renders the post card component', () => {
-    render(<Component {...mockedProps} />);
+    render(<PostCard {...mockedProps} />, { wrapper: MemoryRouter });
 
     const titleElement = screen.getByText(mockedProps.title);
     expect(titleElement).toBeInTheDocument();
@@ -40,10 +34,11 @@ describe('PostCard', () => {
 
   it('renders the post card component with truncated body', () => {
     render(
-      <Component
+      <PostCard
         {...mockedProps}
         body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
-      />
+      />,
+      { wrapper: MemoryRouter }
     );
 
     const titleElement = screen.getByText(mockedProps.title);

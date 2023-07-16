@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import { Breadcrumb } from '../Breadcrumb';
 import {
   faFile,
@@ -9,12 +9,7 @@ import {
 
 describe('Breadcrumb', () => {
   it('renders the home link when no path is provided', () => {
-    render(
-      <BrowserRouter>
-        <Breadcrumb />
-      </BrowserRouter>
-    );
-
+    render(<Breadcrumb />, { wrapper: MemoryRouter });
     const homeLink = screen.getByText('Home');
     expect(homeLink).toBeInTheDocument();
   });
@@ -26,11 +21,7 @@ describe('Breadcrumb', () => {
       { label: 'Current Page', icon: faFileArchive },
     ];
 
-    render(
-      <BrowserRouter>
-        <Breadcrumb path={path} />
-      </BrowserRouter>
-    );
+    render(<Breadcrumb path={path} />, { wrapper: MemoryRouter });
 
     const category1Link = screen.getByText('Category 1');
     const category2Link = screen.getByText('Category 2');
