@@ -1,20 +1,20 @@
 import { CommentResponse, PostsResponse, Post, User } from 'src/types';
 import axios from 'axios';
 
-export const fetchPosts = ({
+export const fetchPosts = async ({
   page,
   filter,
 }: {
   page: number;
   filter?: string;
-}) =>
-  axios
-    .get<PostsResponse>(
-      `https://dummyjson.com/posts${
-        filter ? `/search?q=${filter}&` : '?'
-      }limit=6&skip=${page > 1 ? (page - 1) * 6 : 0}`
-    )
-    .then((res) => res.data);
+}) => {
+  const res = await axios.get<PostsResponse>(
+    `https://dummyjson.com/posts${
+      filter ? `/search?q=${filter}&` : '?'
+    }limit=6&skip=${page > 1 ? (page - 1) * 6 : 0}`
+  );
+  return res.data;
+};
 
 export const fetchPost = ({ postId }: { postId: string }) =>
   axios

@@ -10,7 +10,6 @@ const SearchPosts: React.FC<{
 }> = ({ value, onSubmit, onChange }) => {
   const handleSearch = async (ev: React.FormEvent) => {
     ev.preventDefault();
-    console.log('ayy lmao');
     onSubmit();
   };
 

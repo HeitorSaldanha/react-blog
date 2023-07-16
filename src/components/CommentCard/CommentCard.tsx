@@ -13,7 +13,7 @@ export const CommentCard: React.FC<Props> = ({ userName, body, userId }) => {
   const { image } = data || {};
 
   return (
-    <div className="card mb-3">
+    <div className="card mb-3" data-testid="comment-card">
       <div className="card-content">
         <div className="media">
           <div className="media-left">

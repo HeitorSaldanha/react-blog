@@ -6,10 +6,11 @@ import {
   fetchComments,
 } from 'src/utils/fetchData';
 
-export const useUserQuery = (userId: number) =>
+export const useUserQuery = (userId: number, enabled = false) =>
   useQuery({
     queryKey: ['user', userId],
     queryFn: () => fetchUser({ userId }),
+    ...(enabled ? { enabled: !!userId } : {}),
   });
 
 export const usePostsQuery = ({
@@ -23,6 +24,7 @@ export const usePostsQuery = ({
     queryKey: ['postsData', page],
     queryFn: () => fetchPosts({ page, filter }),
     keepPreviousData: true,
+    retry: false,
   });
 
 export const usePostQuery = (postId: string) =>
@@ -30,6 +32,7 @@ export const usePostQuery = (postId: string) =>
     queryKey: ['postDetail'],
     queryFn: () => fetchPost({ postId }),
     cacheTime: 0,
+    retry: false,
   });
 
 export const useCommentsQuery = (postId: string) =>
@@ -37,4 +40,5 @@ export const useCommentsQuery = (postId: string) =>
     queryKey: ['comments'],
     queryFn: () => fetchComments({ postId }),
     cacheTime: 0,
+    retry: false,
   });
