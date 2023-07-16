@@ -1,4 +1,4 @@
-export const postsResponse = () => ({
+export const postsResponse = {
   posts: [
     {
       id: 1,
@@ -52,4 +52,4 @@ export const postsResponse = () => ({
   total: 150,
   skip: 0,
   limit: 6,
-});
+};

@@ -1,4 +1,4 @@
-export const commentsResponse = () => ({
+export const commentsResponse = {
   comments: [
     {
       id: 131,
@@ -10,4 +10,4 @@ export const commentsResponse = () => ({
   total: 1,
   skip: 0,
   limit: 1,
-});
+};
