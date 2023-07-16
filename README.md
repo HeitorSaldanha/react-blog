@@ -1,4 +1,4 @@
-[Thumbnail.png](https://postimg.cc/mh5qYpM2)
+![Thumbnail.png](https://postimg.cc/mh5qYpM2)
 
 # React-Blog
 
